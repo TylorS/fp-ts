@@ -41,23 +41,22 @@ export interface HKT4 extends HKT3 {
  * `* -> *` constructors
  * @since 3.0.0
  */
-export type Kind<T, A> = T extends {readonly _type: unknown } ? (T & { readonly _A: A })['_type'] : never 
+export type Kind<T, A> = T extends {readonly _type: unknown } ? (T & { readonly _A: A })['_type'] : never
 
 /**
  * `* -> * -> *` constructors
  * @since 3.0.0
  */
-export type Kind2<T, E, A> =  T extends { readonly _type: unknown } ? (T & { readonly _E: E; readonly _A: A })['_type'] : never 
+export type Kind2<T, E, A> = T extends { readonly _type: unknown } ? (T & { readonly _E: E; readonly _A: A })['_type'] : never
 
 /**
  * `* -> * -> * -> *` constructors
  * @since 3.0.0
  */
-export type Kind3<T, R, E, A> =  T extends {readonly _type: unknown } ? (T & { readonly _R: R; readonly _E: E; readonly _A: A })['_type'] : never
+export type Kind3<T, R, E, A> = T extends {readonly _type: unknown } ? (T & { readonly _R: R; readonly _E: E; readonly _A: A })['_type'] : never
 
 /**
  * `* -> * -> * -> * -> *` constructors
  * @since 3.0.0
  */
-export type Kind4<T, S, R, E, A> =  T extends {readonly _type: unknown } ? (T & { readonly  _S: S;  readonly _R: R;  readonly _E: E;  readonly _A: A })['_type'] : never
-
+export type Kind4<T, S, R, E, A> = T extends {readonly _type: unknown } ? (T & { readonly _S: S; readonly _R: R; readonly _E: E; readonly _A: A })['_type'] : never

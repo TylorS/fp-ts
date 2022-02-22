@@ -198,7 +198,7 @@ export const second: Strong2<URI>['second'] = (pbc) => ([a, b]) => [a, pbc(b)]
  * @category instances
  * @since 3.0.0
  */
-export interface URI extends HKT2 { 
+export interface URI extends HKT2 {
   readonly _type: Reader<this['_E'], this['_A']>
 }
 

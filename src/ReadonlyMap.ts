@@ -429,7 +429,6 @@ export interface URI extends HKT2 {
   readonly _type: ReadonlyMap<this['_E'], this['_A']>
 }
 
-
 /**
  * @category instances
  * @since 3.0.0

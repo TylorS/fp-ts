@@ -35,7 +35,7 @@ import {
 import type { FromThese2 } from './FromThese'
 import { identity, Lazy, pipe } from './function'
 import { flap as flap_, Functor2 } from './Functor'
-import type {  HKT2, Kind } from './HKT'
+import type { HKT2, Kind } from './HKT'
 import * as _ from './internal'
 import type { Monad2C } from './Monad'
 import type { NonEmptyArray } from './NonEmptyArray'
@@ -282,10 +282,9 @@ export const of: <A, E = never>(right: A) => These<E, A> = right
  * @category instances
  * @since 3.0.0
  */
-export interface URI extends HKT2 { 
+export interface URI extends HKT2 {
   readonly _type: These<this['_E'], this['_A']>
 }
-
 
 /**
  * @category instances

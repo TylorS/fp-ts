@@ -109,8 +109,8 @@ export const map: Functor2<URI>['map'] = (f) => (fa) => () => {
  * @category instances
  * @since 3.0.0
  */
-export interface URI extends HKT2 { 
-  readonly _type: Writer<this['_E'], this["_A"]>
+export interface URI extends HKT2 {
+  readonly _type: Writer<this['_E'], this['_A']>
 }
 
 /**

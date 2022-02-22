@@ -26,7 +26,7 @@ export interface Endomorphism<A> {
  * @category instances
  * @since 3.0.0
  */
-export interface URI extends HKT { 
+export interface URI extends HKT {
   readonly _type: Endomorphism<this['_A']>
 }
 

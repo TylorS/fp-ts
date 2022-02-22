@@ -12,7 +12,7 @@
  */
 import type { Lazy } from './function'
 import type { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C, Functor4 } from './Functor'
-import type {  Kind, Kind2, Kind3, Kind4, HKT, HKT2, HKT3, HKT4 } from './HKT'
+import type { Kind, Kind2, Kind3, Kind4, HKT, HKT2, HKT3, HKT4 } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model

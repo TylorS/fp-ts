@@ -108,7 +108,7 @@ export const contramap: Contravariant1<URI>['contramap'] = (f) => (fa) =>
  * @category instances
  * @since 3.0.0
  */
-export interface URI extends HKT { 
+export interface URI extends HKT {
   readonly _type: Eq<this['_A']>
 }
 

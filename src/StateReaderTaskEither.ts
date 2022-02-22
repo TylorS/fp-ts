@@ -472,7 +472,6 @@ export interface URI extends HKT4 {
   readonly _type: StateReaderTaskEither<this['_S'], this['_R'], this['_E'], this['_A']>
 }
 
-
 /**
  * @category instances
  * @since 3.0.0

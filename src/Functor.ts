@@ -12,7 +12,7 @@
  * @since 3.0.0
  */
 import { apply, flow } from './function'
-import type { HKT, HKT2, HKT3, HKT4, Kind, Kind2, Kind3, Kind4} from './HKT'
+import type { HKT, HKT2, HKT3, HKT4, Kind, Kind2, Kind3, Kind4 } from './HKT'
 import { tuple } from './tuple'
 
 // -------------------------------------------------------------------------------------
