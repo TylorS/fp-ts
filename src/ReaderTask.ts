@@ -21,6 +21,7 @@ import {
 } from './FromTask'
 import { flow, identity, SK } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor2, tupled as tupled_ } from './Functor'
+import { HKT2 } from './HKT'
 import * as _ from './internal'
 import type { Monad2 } from './Monad'
 import type { Pointed2 } from './Pointed'
@@ -187,7 +188,9 @@ export const flatten: <R, A>(mma: ReaderTask<R, ReaderTask<R, A>>) => ReaderTask
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReaderTask'
+export interface URI extends HKT2 {
+  readonly _type: ReaderTask<this['_E'], this['_A']>
+}
 
 declare module './HKT' {
   interface URItoKind2<E, A> {

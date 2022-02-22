@@ -44,6 +44,7 @@ import {
 } from './FromTask'
 import { flow, identity, pipe } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor4, tupled as tupled_ } from './Functor'
+import { HKT4 } from './HKT'
 import * as _ from './internal'
 import type { IO } from './IO'
 import type { IOEither, URI as IEURI } from './IOEither'
@@ -467,13 +468,10 @@ export const alt: Alt4<URI>['alt'] = altW
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'StateReaderTaskEither'
-
-declare module './HKT' {
-  interface URItoKind4<S, R, E, A> {
-    readonly StateReaderTaskEither: StateReaderTaskEither<S, R, E, A>
-  }
+export interface URI extends HKT4 {
+  readonly _type: StateReaderTaskEither<this['_S'], this['_R'], this['_E'], this['_A']>
 }
+
 
 /**
  * @category instances

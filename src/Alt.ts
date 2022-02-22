@@ -12,7 +12,7 @@
  */
 import type { Lazy } from './function'
 import type { Functor, Functor1, Functor2, Functor2C, Functor3, Functor3C, Functor4 } from './Functor'
-import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import type {  Kind, Kind2, Kind3, Kind4, HKT, HKT2, HKT3, HKT4 } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -23,14 +23,6 @@ import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from '
  * @since 3.0.0
  */
 export interface Alt<F> extends Functor<F> {
-  readonly alt: <A>(second: Lazy<HKT<F, A>>) => (first: HKT<F, A>) => HKT<F, A>
-}
-
-/**
- * @category type classes
- * @since 3.0.0
- */
-export interface Alt1<F extends URIS> extends Functor1<F> {
   readonly alt: <A>(second: Lazy<Kind<F, A>>) => (first: Kind<F, A>) => Kind<F, A>
 }
 
@@ -38,7 +30,15 @@ export interface Alt1<F extends URIS> extends Functor1<F> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Alt2<F extends URIS2> extends Functor2<F> {
+export interface Alt1<F extends HKT> extends Functor1<F> {
+  readonly alt: <A>(second: Lazy<Kind<F, A>>) => (first: Kind<F, A>) => Kind<F, A>
+}
+
+/**
+ * @category type classes
+ * @since 3.0.0
+ */
+export interface Alt2<F extends HKT2> extends Functor2<F> {
   readonly alt: <E, A>(second: Lazy<Kind2<F, E, A>>) => (first: Kind2<F, E, A>) => Kind2<F, E, A>
 }
 
@@ -46,7 +46,7 @@ export interface Alt2<F extends URIS2> extends Functor2<F> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Alt2C<F extends URIS2, E> extends Functor2C<F, E> {
+export interface Alt2C<F extends HKT2, E> extends Functor2C<F, E> {
   readonly alt: <A>(second: Lazy<Kind2<F, E, A>>) => (first: Kind2<F, E, A>) => Kind2<F, E, A>
 }
 
@@ -54,7 +54,7 @@ export interface Alt2C<F extends URIS2, E> extends Functor2C<F, E> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Alt3<F extends URIS3> extends Functor3<F> {
+export interface Alt3<F extends HKT3> extends Functor3<F> {
   readonly alt: <R, E, A>(second: Lazy<Kind3<F, R, E, A>>) => (first: Kind3<F, R, E, A>) => Kind3<F, R, E, A>
 }
 
@@ -62,7 +62,7 @@ export interface Alt3<F extends URIS3> extends Functor3<F> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Alt3C<F extends URIS3, E> extends Functor3C<F, E> {
+export interface Alt3C<F extends HKT3, E> extends Functor3C<F, E> {
   readonly alt: <R, A>(second: Lazy<Kind3<F, R, E, A>>) => (first: Kind3<F, R, E, A>) => Kind3<F, R, E, A>
 }
 
@@ -70,7 +70,7 @@ export interface Alt3C<F extends URIS3, E> extends Functor3C<F, E> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Alt4<F extends URIS4> extends Functor4<F> {
+export interface Alt4<F extends HKT4> extends Functor4<F> {
   readonly alt: <S, R, E, A>(
     second: Lazy<Kind4<F, S, R, E, A>>
   ) => (first: Kind4<F, S, R, E, A>) => Kind4<F, S, R, E, A>
@@ -83,25 +83,25 @@ export interface Alt4<F extends URIS4> extends Functor4<F> {
 /**
  * @since 3.0.0
  */
-export function altAll<F extends URIS4>(
+export function altAll<F extends HKT4>(
   F: Alt4<F>
 ): <S, R, E, A>(startWith: Kind4<F, S, R, E, A>) => (as: ReadonlyArray<Kind4<F, S, R, E, A>>) => Kind4<F, S, R, E, A>
-export function altAll<F extends URIS3>(
+export function altAll<F extends HKT3>(
   F: Alt3<F>
 ): <R, E, A>(startWith: Kind3<F, R, E, A>) => (as: ReadonlyArray<Kind3<F, R, E, A>>) => Kind3<F, R, E, A>
-export function altAll<F extends URIS3, E>(
+export function altAll<F extends HKT3, E>(
   F: Alt3C<F, E>
 ): <R, A>(startWith: Kind3<F, R, E, A>) => (as: ReadonlyArray<Kind3<F, R, E, A>>) => Kind3<F, R, E, A>
-export function altAll<F extends URIS2>(
+export function altAll<F extends HKT2>(
   F: Alt2<F>
 ): <E, A>(startWith: Kind2<F, E, A>) => (as: ReadonlyArray<Kind2<F, E, A>>) => Kind2<F, E, A>
-export function altAll<F extends URIS2, E>(
+export function altAll<F extends HKT2, E>(
   F: Alt2C<F, E>
 ): <A>(startWith: Kind2<F, E, A>) => (as: ReadonlyArray<Kind2<F, E, A>>) => Kind2<F, E, A>
-export function altAll<F extends URIS>(
+export function altAll<F extends HKT>(
   F: Alt1<F>
 ): <A>(startWith: Kind<F, A>) => (as: ReadonlyArray<Kind<F, A>>) => Kind<F, A>
-export function altAll<F>(F: Alt<F>): <A>(startWith: HKT<F, A>) => (as: ReadonlyArray<HKT<F, A>>) => HKT<F, A>
-export function altAll<F>(F: Alt<F>): <A>(startWith: HKT<F, A>) => (as: ReadonlyArray<HKT<F, A>>) => HKT<F, A> {
+export function altAll<F>(F: Alt<F>): <A>(startWith: Kind<F, A>) => (as: ReadonlyArray<Kind<F, A>>) => Kind<F, A>
+export function altAll<F>(F: Alt<F>): <A>(startWith: Kind<F, A>) => (as: ReadonlyArray<Kind<F, A>>) => Kind<F, A> {
   return (startWith) => (as) => as.reduce((acc, a) => F.alt(() => a)(acc), startWith)
 }

@@ -26,6 +26,7 @@ import {
 import { chainFirstIOK as chainFirstIOK_, chainIOK as chainIOK_, FromIO2, fromIOK as fromIOK_ } from './FromIO'
 import { flow, identity, Lazy, pipe, SK } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor2, tupled as tupled_ } from './Functor'
+import { HKT2 } from './HKT'
 import * as _ from './internal'
 import * as I from './IO'
 import type { Monad2 } from './Monad'
@@ -395,12 +396,8 @@ export const altW: <E2, B>(
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'IOEither'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly IOEither: IOEither<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: IOEither<this['_E'], this['_A']>
 }
 
 /**

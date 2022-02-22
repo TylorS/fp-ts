@@ -11,6 +11,7 @@
  */
 import type { Contravariant1 } from './Contravariant'
 import { flow } from './function'
+import { HKT } from './HKT'
 import type { Monoid } from './Monoid'
 import type { Ord } from './Ord'
 import type { Semigroup } from './Semigroup'
@@ -107,12 +108,8 @@ export const contramap: Contravariant1<URI>['contramap'] = (f) => (fa) =>
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Eq'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Eq: Eq<A>
-  }
+export interface URI extends HKT { 
+  readonly _type: Eq<this['_A']>
 }
 
 /**

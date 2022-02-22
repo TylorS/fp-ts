@@ -8,6 +8,7 @@ import type { Endomorphism } from './Endomorphism'
 import type { FromState2 } from './FromState'
 import { identity } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor2, tupled as tupled_ } from './Functor'
+import { HKT2 } from './HKT'
 import * as _ from './internal'
 import type { Monad2 } from './Monad'
 import type { NonEmptyArray } from './NonEmptyArray'
@@ -125,12 +126,8 @@ export const flatten: <E, A>(mma: State<E, State<E, A>>) => State<E, A> =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'State'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly State: State<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: State<this['_E'], this['_A']>
 }
 
 /**

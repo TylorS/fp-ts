@@ -23,6 +23,7 @@ import type { Pointed1 } from './Pointed'
 import * as _ from './internal'
 import type { ReadonlyNonEmptyArray } from './ReadonlyNonEmptyArray'
 import type { NonEmptyArray } from './NonEmptyArray'
+import { HKT } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -101,12 +102,8 @@ export const flatten: <A>(mma: IO<IO<A>>) => IO<A> =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'IO'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly IO: IO<A>
-  }
+export interface URI extends HKT {
+  readonly _type: IO<this['_A']>
 }
 
 /**

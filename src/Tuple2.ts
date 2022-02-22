@@ -12,7 +12,7 @@ import type { Extend2 } from './Extend'
 import type { Foldable2 } from './Foldable'
 import { identity, pipe } from './function'
 import { flap as flap_, Functor2 } from './Functor'
-import type { HKT } from './HKT'
+import type { HKT2, Kind } from './HKT'
 import type { Monad2C } from './Monad'
 import type { Monoid } from './Monoid'
 import type { Pointed2C } from './Pointed'
@@ -139,9 +139,9 @@ export const reduceRight: Foldable2<URI>['reduceRight'] = (b, f) => (fa) => f(fs
 /**
  * @since 3.0.0
  */
-export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => HKT<F, B>) => <E>(
+export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative<F>) => <A, B>(f: (a: A) => Kind<F, B>) => <E>(
   t: Tuple2<E, A>
-): HKT<F, Tuple2<E, B>> =>
+): Kind<F, Tuple2<E, B>> =>
   pipe(
     f(fst(t)),
     F.map((b) => [b, snd(t)])
@@ -155,12 +155,8 @@ export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative<F>) =>
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Tuple2'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Tuple2: Tuple2<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: Tuple2<this['_E'], this['_A']>
 }
 
 /**

@@ -17,6 +17,7 @@ import { FromTask2, fromTaskK as fromTaskK_ } from './FromTask'
 import { FromThese2, fromTheseK as fromTheseK_ } from './FromThese'
 import { flow, SK } from './function'
 import { flap as flap_, Functor2 } from './Functor'
+import { HKT2 } from './HKT'
 import * as _ from './internal'
 import type { IO } from './IO'
 import type { URI as IEURI } from './IOEither'
@@ -236,12 +237,8 @@ export const of: <A, E = never>(a: A) => TaskThese<E, A> = right
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'TaskThese'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly TaskThese: TaskThese<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: TaskThese<this['_E'], this['_A']>
 }
 
 /**

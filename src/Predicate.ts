@@ -3,6 +3,7 @@
  */
 import type { Contravariant1 } from './Contravariant'
 import { constFalse, constTrue, flow } from './function'
+import { HKT } from './HKT'
 import type { Monoid } from './Monoid'
 import type { Semigroup } from './Semigroup'
 
@@ -35,7 +36,9 @@ export const contramap: Contravariant1<URI>['contramap'] = (f) => (predicate) =>
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Predicate'
+export interface URI extends HKT {
+  readonly _type: Predicate<this['_A']>
+}
 
 declare module './HKT' {
   interface URItoKind<A> {

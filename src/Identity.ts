@@ -12,7 +12,7 @@ import type { Extend1 } from './Extend'
 import type { Foldable1 } from './Foldable'
 import { apply, flow, identity } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor1, tupled as tupled_ } from './Functor'
-import type { HKT } from './HKT'
+import type { HKT, Kind } from './HKT'
 import * as _ from './internal'
 import type { Monad1 } from './Monad'
 import type { Pointed1 } from './Pointed'
@@ -119,7 +119,7 @@ export const reduceRight: Foldable1<URI>['reduceRight'] = (b, f) => (fa) => f(fa
  */
 export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative_<F>
-): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: Identity<A>) => HKT<F, Identity<B>>) => (f) => flow(f, F.map(identity))
+): (<A, B>(f: (a: A) => Kind<F, B>) => (ta: Identity<A>) => Kind<F, Identity<B>>) => (f) => flow(f, F.map(identity))
 
 /**
  * Less strict version of [`alt`](#alt).
@@ -152,12 +152,8 @@ export const chainRec: ChainRec1<URI>['chainRec'] = tailRec
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Identity'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Identity: Identity<A>
-  }
+export interface URI extends HKT {
+  readonly _type: Identity<this['_A']>
 }
 
 /**

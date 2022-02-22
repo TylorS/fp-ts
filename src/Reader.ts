@@ -18,6 +18,7 @@ import * as _ from './internal'
 import type { FromReader2 } from './FromReader'
 import type { ReadonlyNonEmptyArray } from './ReadonlyNonEmptyArray'
 import type { NonEmptyArray } from './NonEmptyArray'
+import { HKT2 } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -197,12 +198,8 @@ export const second: Strong2<URI>['second'] = (pbc) => ([a, b]) => [a, pbc(b)]
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Reader'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Reader: Reader<E, A>
-  }
+export interface URI extends HKT2 { 
+  readonly _type: Reader<this['_E'], this['_A']>
 }
 
 /**

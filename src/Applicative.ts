@@ -18,7 +18,7 @@
  * @since 3.0.0
  */
 import { Apply, Apply1, Apply2, Apply2C, Apply3, Apply3C, Apply4, getApplySemigroup } from './Apply'
-import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import type { HKT, Kind, Kind2, Kind3, Kind4, HKT2, HKT3, HKT4 } from './HKT'
 import type { Monoid } from './Monoid'
 import type { Pointed, Pointed1, Pointed2, Pointed2C, Pointed3, Pointed3C, Pointed4 } from './Pointed'
 
@@ -36,37 +36,37 @@ export interface Applicative<F> extends Apply<F>, Pointed<F> {}
  * @category type classes
  * @since 3.0.0
  */
-export interface Applicative1<F extends URIS> extends Apply1<F>, Pointed1<F> {}
+export interface Applicative1<F extends HKT> extends Apply1<F>, Pointed1<F> {}
 
 /**
  * @category type classes
  * @since 3.0.0
  */
-export interface Applicative2<F extends URIS2> extends Apply2<F>, Pointed2<F> {}
+export interface Applicative2<F extends HKT2> extends Apply2<F>, Pointed2<F> {}
 
 /**
  * @category type classes
  * @since 3.0.0
  */
-export interface Applicative2C<F extends URIS2, E> extends Apply2C<F, E>, Pointed2C<F, E> {}
+export interface Applicative2C<F extends HKT2, E> extends Apply2C<F, E>, Pointed2C<F, E> {}
 
 /**
  * @category type classes
  * @since 3.0.0
  */
-export interface Applicative3<F extends URIS3> extends Apply3<F>, Pointed3<F> {}
+export interface Applicative3<F extends HKT3> extends Apply3<F>, Pointed3<F> {}
 
 /**
  * @category type classes
  * @since 3.0.0
  */
-export interface Applicative3C<F extends URIS3, E> extends Apply3C<F, E>, Pointed3C<F, E> {}
+export interface Applicative3C<F extends HKT3, E> extends Apply3C<F, E>, Pointed3C<F, E> {}
 
 /**
  * @category type classes
  * @since 3.0.0
  */
-export interface Applicative4<F extends URIS4> extends Apply4<F>, Pointed4<F> {}
+export interface Applicative4<F extends HKT4> extends Apply4<F>, Pointed4<F> {}
 
 // -------------------------------------------------------------------------------------
 // utils
@@ -77,24 +77,24 @@ export interface Applicative4<F extends URIS4> extends Apply4<F>, Pointed4<F> {}
  *
  * @since 3.0.0
  */
-export function getApplicativeMonoid<F extends URIS4>(
+export function getApplicativeMonoid<F extends HKT4>(
   F: Applicative4<F>
 ): <A, S, R, E>(M: Monoid<A>) => Monoid<Kind4<F, S, R, E, A>>
-export function getApplicativeMonoid<F extends URIS3>(
+export function getApplicativeMonoid<F extends HKT3>(
   F: Applicative3<F>
 ): <A, R, E>(M: Monoid<A>) => Monoid<Kind3<F, R, E, A>>
-export function getApplicativeMonoid<F extends URIS3, E>(
+export function getApplicativeMonoid<F extends HKT3, E>(
   F: Applicative3C<F, E>
 ): <A, R>(M: Monoid<A>) => Monoid<Kind3<F, R, E, A>>
-export function getApplicativeMonoid<F extends URIS2>(
+export function getApplicativeMonoid<F extends HKT2>(
   F: Applicative2<F>
 ): <A, E>(M: Monoid<A>) => Monoid<Kind2<F, E, A>>
-export function getApplicativeMonoid<F extends URIS2, E>(
+export function getApplicativeMonoid<F extends HKT2, E>(
   F: Applicative2C<F, E>
 ): <A>(M: Monoid<A>) => Monoid<Kind2<F, E, A>>
-export function getApplicativeMonoid<F extends URIS>(F: Applicative1<F>): <A>(M: Monoid<A>) => Monoid<Kind<F, A>>
-export function getApplicativeMonoid<F>(F: Applicative<F>): <A>(M: Monoid<A>) => Monoid<HKT<F, A>>
-export function getApplicativeMonoid<F>(F: Applicative<F>): <A>(M: Monoid<A>) => Monoid<HKT<F, A>> {
+export function getApplicativeMonoid<F extends HKT>(F: Applicative1<F>): <A>(M: Monoid<A>) => Monoid<Kind<F, A>>
+export function getApplicativeMonoid<F>(F: Applicative<F>): <A>(M: Monoid<A>) => Monoid<Kind<F, A>>
+export function getApplicativeMonoid<F>(F: Applicative<F>): <A>(M: Monoid<A>) => Monoid<Kind<F, A>> {
   const f = getApplySemigroup(F)
   return <A>(M: Monoid<A>) => ({
     concat: f(M).concat,

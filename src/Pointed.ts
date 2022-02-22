@@ -1,7 +1,7 @@
 /**
  * @since 3.0.0
  */
-import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import type { HKT, Kind, Kind2, Kind3, Kind4, HKT2, HKT3, HKT4 } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -13,14 +13,14 @@ import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from '
  */
 export interface Pointed<F> {
   readonly URI?: F
-  readonly of: <A>(a: A) => HKT<F, A>
+  readonly of: <A>(a: A) => Kind<F, A>
 }
 
 /**
  * @category type classes
  * @since 3.0.0
  */
-export interface Pointed1<F extends URIS> {
+export interface Pointed1<F extends HKT> {
   readonly URI?: F
   readonly of: <A>(a: A) => Kind<F, A>
 }
@@ -29,7 +29,7 @@ export interface Pointed1<F extends URIS> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Pointed2<F extends URIS2> {
+export interface Pointed2<F extends HKT2> {
   readonly URI?: F
   readonly of: <A, E>(a: A) => Kind2<F, E, A>
 }
@@ -38,7 +38,7 @@ export interface Pointed2<F extends URIS2> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Pointed2C<F extends URIS2, E> {
+export interface Pointed2C<F extends HKT2, E> {
   readonly URI?: F
   readonly _E?: E
   readonly of: <A>(a: A) => Kind2<F, E, A>
@@ -48,7 +48,7 @@ export interface Pointed2C<F extends URIS2, E> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Pointed3<F extends URIS3> {
+export interface Pointed3<F extends HKT3> {
   readonly URI?: F
   readonly of: <A, R, E>(a: A) => Kind3<F, R, E, A>
 }
@@ -57,7 +57,7 @@ export interface Pointed3<F extends URIS3> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Pointed3C<F extends URIS3, E> {
+export interface Pointed3C<F extends HKT3, E> {
   readonly URI?: F
   readonly _E?: E
   readonly of: <A, R>(a: A) => Kind3<F, R, E, A>
@@ -67,7 +67,7 @@ export interface Pointed3C<F extends URIS3, E> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Pointed4<F extends URIS4> {
+export interface Pointed4<F extends HKT4> {
   readonly URI?: F
   readonly of: <A, S, R, E>(a: A) => Kind4<F, S, R, E, A>
 }

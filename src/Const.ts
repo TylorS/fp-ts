@@ -17,6 +17,7 @@ import type { Eq } from './Eq'
 import { flow, identity, unsafeCoerce } from './function'
 import { flap as flap_, Functor2 } from './Functor'
 import type { HeytingAlgebra } from './HeytingAlgebra'
+import { HKT2 } from './HKT'
 import type { Monoid } from './Monoid'
 import type { Ord } from './Ord'
 import type { Ring } from './Ring'
@@ -80,12 +81,8 @@ export const mapLeft: Bifunctor2<URI>['mapLeft'] =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Const'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Const: Const<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: Const<this['_E'], this['_A']>
 }
 
 /**

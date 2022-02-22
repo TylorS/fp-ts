@@ -4,6 +4,7 @@
 import type { Either } from './Either'
 import { Eq, fromEquals } from './Eq'
 import { identity } from './function'
+import { HKT } from './HKT'
 import * as _ from './internal'
 import type { Magma } from './Magma'
 import type { Monoid } from './Monoid'
@@ -347,12 +348,8 @@ export const partitionMap = <B, C>(EB: Eq<B>, EC: Eq<C>) => <A>(f: (a: A) => Eit
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReadonlySet'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlySet: ReadonlySet<A>
-  }
+export interface URI extends HKT {
+  readonly _type: ReadonlySet<this['_A']>
 }
 
 /**

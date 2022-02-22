@@ -34,7 +34,7 @@ import {
 } from './FromEither'
 import { flow, identity, Lazy, pipe } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor2, tupled as tupled_ } from './Functor'
-import type { HKT } from './HKT'
+import type { HKT2, Kind } from './HKT'
 import * as _ from './internal'
 import type { Monad2 } from './Monad'
 import type { Monoid } from './Monoid'
@@ -564,9 +564,9 @@ export const reduceRight: Foldable2<URI>['reduceRight'] = (b, f) => (fa) => (isL
  * @category Traversable
  * @since 3.0.0
  */
-export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative_<F>) => <A, B>(f: (a: A) => HKT<F, B>) => <E>(
+export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative_<F>) => <A, B>(f: (a: A) => Kind<F, B>) => <E>(
   ta: Either<E, A>
-): HKT<F, Either<E, B>> => (isLeft(ta) ? F.of(left(ta.left)) : pipe(f(ta.right), F.map(right)))
+): Kind<F, Either<E, B>> => (isLeft(ta) ? F.of(left(ta.left)) : pipe(f(ta.right), F.map(right)))
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -576,12 +576,8 @@ export const traverse: Traversable2<URI>['traverse'] = <F>(F: Applicative_<F>) =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Either'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Either: Either<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: Either<this['_E'], this['_A']>
 }
 
 /**

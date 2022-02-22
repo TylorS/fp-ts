@@ -13,7 +13,7 @@ import type { FoldableWithIndex2C } from './FoldableWithIndex'
 import { flow, pipe } from './function'
 import { flap as flap_, Functor2 } from './Functor'
 import type { FunctorWithIndex2C } from './FunctorWithIndex'
-import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import type { HKT, Kind, Kind2, Kind3, Kind4, HKT2, HKT3, HKT4 } from './HKT'
 import * as _ from './internal'
 import type { Magma } from './Magma'
 import type { Monoid } from './Monoid'
@@ -50,30 +50,30 @@ export const singleton = <K, A>(k: K, a: A): ReadonlyMap<K, A> => new Map([[k, a
  * @category constructors
  * @since 3.0.0
  */
-export function fromFoldable<F extends URIS4>(
+export function fromFoldable<F extends HKT4>(
   F: Foldable4<F>
 ): <K, B>(
   E: Eq<K>,
   M: Magma<B>
 ) => <A>(f: (a: A) => readonly [K, B]) => <S, R, E>(fka: Kind4<F, S, R, E, A>) => ReadonlyMap<K, B>
-export function fromFoldable<F extends URIS3>(
+export function fromFoldable<F extends HKT3>(
   F: Foldable3<F>
 ): <K, B>(
   E: Eq<K>,
   M: Magma<B>
 ) => <A>(f: (a: A) => readonly [K, B]) => <R, E>(fka: Kind3<F, R, E, A>) => ReadonlyMap<K, B>
-export function fromFoldable<F extends URIS2>(
+export function fromFoldable<F extends HKT2>(
   F: Foldable2<F>
 ): <K, B>(E: Eq<K>, M: Magma<B>) => <A>(f: (a: A) => readonly [K, B]) => <E>(fka: Kind2<F, E, A>) => ReadonlyMap<K, B>
-export function fromFoldable<F extends URIS>(
+export function fromFoldable<F extends HKT>(
   F: Foldable1<F>
 ): <K, B>(E: Eq<K>, M: Magma<B>) => <A>(f: (a: A) => readonly [K, B]) => (fka: Kind<F, A>) => ReadonlyMap<K, B>
 export function fromFoldable<F>(
   F: Foldable<F>
-): <K, B>(E: Eq<K>, M: Magma<B>) => <A>(f: (a: A) => readonly [K, B]) => (fka: HKT<F, A>) => ReadonlyMap<K, B>
+): <K, B>(E: Eq<K>, M: Magma<B>) => <A>(f: (a: A) => readonly [K, B]) => (fka: Kind<F, A>) => ReadonlyMap<K, B>
 export function fromFoldable<F>(
   F: Foldable<F>
-): <K, B>(E: Eq<K>, M: Magma<B>) => <A>(f: (a: A) => readonly [K, B]) => (fka: HKT<F, A>) => ReadonlyMap<K, B> {
+): <K, B>(E: Eq<K>, M: Magma<B>) => <A>(f: (a: A) => readonly [K, B]) => (fka: Kind<F, A>) => ReadonlyMap<K, B> {
   return <K, B>(E: Eq<K>, M: Magma<B>) => {
     const lookupWithKeyE = lookupWithKey(E)
     return <A>(f: (a: A) => readonly [K, B]) =>
@@ -425,13 +425,10 @@ export const partitionMapWithIndex = <K, A, B, C>(f: (k: K, a: A) => Either<B, C
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReadonlyMap'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly ReadonlyMap: ReadonlyMap<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: ReadonlyMap<this['_E'], this['_A']>
 }
+
 
 /**
  * @category instances
@@ -650,7 +647,7 @@ export const traverse = <K>(O: Ord<K>): Traversable2C<URI, K>['traverse'] => {
   const traverseWithIndexO = traverseWithIndex(O)
   return <F>(F: Applicative<F>) => {
     const traverseWithIndexOF = traverseWithIndexO(F)
-    return <A, B>(f: (a: A) => HKT<F, B>) => traverseWithIndexOF<A, B>((_, a) => f(a))
+    return <A, B>(f: (a: A) => Kind<F, B>) => traverseWithIndexOF<A, B>((_, a) => f(a))
   }
 }
 
@@ -670,8 +667,8 @@ export const getTraversable = <K>(O: Ord<K>): Traversable2C<URI, K> => {
  */
 export const traverseWithIndex = <K>(O: Ord<K>): TraversableWithIndex2C<URI, K, K>['traverseWithIndex'] => {
   const keysO = keys(O)
-  return <F>(F: Applicative<F>) => <A, B>(f: (k: K, a: A) => HKT<F, B>) => (ta: ReadonlyMap<K, A>) => {
-    let fm: HKT<F, Map<K, B>> = F.of(new Map())
+  return <F>(F: Applicative<F>) => <A, B>(f: (k: K, a: A) => Kind<F, B>) => (ta: ReadonlyMap<K, A>) => {
+    let fm: Kind<F, Map<K, B>> = F.of(new Map())
     for (const k of keysO(ta)) {
       const a = ta.get(k)!
       fm = pipe(
@@ -914,15 +911,15 @@ export const toReadonlyArray = <K>(O: Ord<K>): (<A>(m: ReadonlyMap<K, A>) => Rea
  *
  * @since 3.0.0
  */
-export function toUnfoldable<F extends URIS>(
+export function toUnfoldable<F extends HKT>(
   U: Unfoldable1<F>
 ): <K>(o: Ord<K>) => <A>(d: ReadonlyMap<K, A>) => Kind<F, readonly [K, A]>
 export function toUnfoldable<F>(
   U: Unfoldable<F>
-): <K>(o: Ord<K>) => <A>(m: ReadonlyMap<K, A>) => HKT<F, readonly [K, A]>
+): <K>(o: Ord<K>) => <A>(m: ReadonlyMap<K, A>) => Kind<F, readonly [K, A]>
 export function toUnfoldable<F>(
   U: Unfoldable<F>
-): <K>(o: Ord<K>) => <A>(m: ReadonlyMap<K, A>) => HKT<F, readonly [K, A]> {
+): <K>(o: Ord<K>) => <A>(m: ReadonlyMap<K, A>) => Kind<F, readonly [K, A]> {
   return (o) => {
     const toReadonlyArrayO = toReadonlyArray(o)
     return (m) => {

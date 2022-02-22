@@ -25,7 +25,7 @@ import type { FoldableWithIndex1 } from './FoldableWithIndex'
 import { identity, Lazy, pipe } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor1, tupled as tupled_ } from './Functor'
 import type { FunctorWithIndex1 } from './FunctorWithIndex'
-import type { HKT } from './HKT'
+import type { HKT, Kind } from './HKT'
 import * as _ from './internal'
 import type { Monad1 } from './Monad'
 import { fromReadonlyNonEmptyArray, NonEmptyArray } from './NonEmptyArray'
@@ -415,7 +415,7 @@ export function comprehension<A, B, C, R>(
   input: readonly [ReadonlyNonEmptyArray<A>, ReadonlyNonEmptyArray<B>, ReadonlyNonEmptyArray<C>],
   f: (a: A, b: B, c: C) => R
 ): ReadonlyNonEmptyArray<R>
-export function comprehension<A, B, C, R>(
+export function comprehension<A, B, R>(
   input: readonly [ReadonlyNonEmptyArray<A>, ReadonlyNonEmptyArray<B>],
   f: (a: A, b: B) => R
 ): ReadonlyNonEmptyArray<R>
@@ -838,7 +838,7 @@ export const reduceRightWithIndex: FoldableWithIndex1<URI, number>['reduceRightW
  */
 export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative_<F>
-): (<A, B>(f: (a: A) => HKT<F, B>) => (as: ReadonlyNonEmptyArray<A>) => HKT<F, ReadonlyNonEmptyArray<B>>) => {
+): (<A, B>(f: (a: A) => Kind<F, B>) => (as: ReadonlyNonEmptyArray<A>) => Kind<F, ReadonlyNonEmptyArray<B>>) => {
   const traverseWithIndexF = traverseWithIndex(F)
   return (f) => traverseWithIndexF((_, a) => f(a))
 }
@@ -850,9 +850,9 @@ export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWith
   A,
   B
 >(
-  f: (i: number, a: A) => HKT<F, B>
-) => (as: ReadonlyNonEmptyArray<A>): HKT<F, ReadonlyNonEmptyArray<B>> => {
-  let out: HKT<F, ReadonlyNonEmptyArray<B>> = pipe(f(0, head(as)), F.map(of))
+  f: (i: number, a: A) => Kind<F, B>
+) => (as: ReadonlyNonEmptyArray<A>): Kind<F, ReadonlyNonEmptyArray<B>> => {
+  let out: Kind<F, ReadonlyNonEmptyArray<B>> = pipe(f(0, head(as)), F.map(of))
   for (let i = 1; i < as.length; i++) {
     out = pipe(
       out,
@@ -876,12 +876,8 @@ export const extract: Comonad1<URI>['extract'] = _.head
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReadonlyNonEmptyArray'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlyNonEmptyArray: ReadonlyNonEmptyArray<A>
-  }
+export interface URI extends HKT {
+  readonly _type: ReadonlyNonEmptyArray<this['_A']>
 }
 
 /**

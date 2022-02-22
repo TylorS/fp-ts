@@ -20,7 +20,7 @@ import { FromEither1, fromEitherK as fromEitherK_, fromPredicate as fromPredicat
 import { identity, Lazy, pipe } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor1, tupled as tupled_ } from './Functor'
 import type { FunctorWithIndex1 } from './FunctorWithIndex'
-import type { HKT } from './HKT'
+import type { HKT, Kind } from './HKT'
 import * as _ from './internal'
 import type { Magma } from './Magma'
 import type { Monad1 } from './Monad'
@@ -1534,7 +1534,7 @@ export const reduceRightWithIndex: FoldableWithIndex1<URI, number>['reduceRightW
  */
 export const traverse: Traversable1<URI>['traverse'] = <F>(
   F: Applicative_<F>
-): (<A, B>(f: (a: A) => HKT<F, B>) => (ta: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>) => {
+): (<A, B>(f: (a: A) => Kind<F, B>) => (ta: ReadonlyArray<A>) => Kind<F, ReadonlyArray<B>>) => {
   const traverseWithIndexF = traverseWithIndex(F)
   return (f) => traverseWithIndexF((_, a) => f(a))
 }
@@ -1547,8 +1547,8 @@ export const traverseWithIndex: TraversableWithIndex1<URI, number>['traverseWith
   A,
   B
 >(
-  f: (i: number, a: A) => HKT<F, B>
-): ((ta: ReadonlyArray<A>) => HKT<F, ReadonlyArray<B>>) =>
+  f: (i: number, a: A) => Kind<F, B>
+): ((ta: ReadonlyArray<A>) => Kind<F, ReadonlyArray<B>>) =>
   reduceWithIndex(F.of(zero()), (i, fbs, a) =>
     pipe(
       fbs,
@@ -1581,12 +1581,8 @@ export const unfold: Unfoldable1<URI>['unfold'] = <B, A>(b: B, f: (b: B) => Opti
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReadonlyArray'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlyArray: ReadonlyArray<A>
-  }
+export interface URI extends HKT {
+  readonly _type: ReadonlyArray<this['_A']>
 }
 
 /**

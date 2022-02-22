@@ -29,7 +29,7 @@
  */
 import type { Category, Category2, Category3, Category4 } from './Category'
 import { identity, pipe } from './function'
-import type { HKT2, Kind2, Kind3, URIS2, URIS3, URIS4, Kind4 } from './HKT'
+import type { HKT2, Kind2, Kind3, HKT3, HKT4, Kind4 } from './HKT'
 import type { Profunctor, Profunctor2, Profunctor3, Profunctor4 } from './Profunctor'
 
 /**
@@ -37,15 +37,6 @@ import type { Profunctor, Profunctor2, Profunctor3, Profunctor4 } from './Profun
  * @since 3.0.0
  */
 export interface Strong<P> extends Profunctor<P> {
-  readonly first: <A, B, C>(pab: HKT2<P, A, B>) => HKT2<P, readonly [A, C], readonly [B, C]>
-  readonly second: <A, B, C>(pab: HKT2<P, B, C>) => HKT2<P, readonly [A, B], readonly [A, C]>
-}
-
-/**
- * @category type classes
- * @since 3.0.0
- */
-export interface Strong2<P extends URIS2> extends Profunctor2<P> {
   readonly first: <A, B, C>(pab: Kind2<P, A, B>) => Kind2<P, readonly [A, C], readonly [B, C]>
   readonly second: <A, B, C>(pab: Kind2<P, B, C>) => Kind2<P, readonly [A, B], readonly [A, C]>
 }
@@ -54,7 +45,16 @@ export interface Strong2<P extends URIS2> extends Profunctor2<P> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Strong3<P extends URIS3> extends Profunctor3<P> {
+export interface Strong2<P extends HKT2> extends Profunctor2<P> {
+  readonly first: <A, B, C>(pab: Kind2<P, A, B>) => Kind2<P, readonly [A, C], readonly [B, C]>
+  readonly second: <A, B, C>(pab: Kind2<P, B, C>) => Kind2<P, readonly [A, B], readonly [A, C]>
+}
+
+/**
+ * @category type classes
+ * @since 3.0.0
+ */
+export interface Strong3<P extends HKT3> extends Profunctor3<P> {
   readonly first: <R, A, B, C>(pab: Kind3<P, R, A, B>) => Kind3<P, R, readonly [A, C], readonly [B, C]>
   readonly second: <R, A, B, C>(pab: Kind3<P, R, B, C>) => Kind3<P, R, readonly [A, B], readonly [A, C]>
 }
@@ -63,7 +63,7 @@ export interface Strong3<P extends URIS3> extends Profunctor3<P> {
  * @category type classes
  * @since 3.0.0
  */
-export interface Strong4<P extends URIS4> extends Profunctor4<P> {
+export interface Strong4<P extends HKT4> extends Profunctor4<P> {
   readonly first: <S, R, A, B, C>(pab: Kind4<P, S, R, A, B>) => Kind4<P, S, R, readonly [A, C], readonly [B, C]>
   readonly second: <S, R, A, B, C>(pab: Kind4<P, S, R, B, C>) => Kind4<P, S, R, readonly [A, B], readonly [A, C]>
 }
@@ -82,30 +82,30 @@ export interface Strong4<P extends URIS4> extends Profunctor4<P> {
  *
  * @since 3.0.0
  */
-export function split<F extends URIS4>(
+export function split<F extends HKT4>(
   S: Strong4<F>,
   C: Category4<F>
 ): <S, R, A, B, C, D>(
   pab: Kind4<F, S, R, A, B>,
   pcd: Kind4<F, S, R, C, D>
 ) => Kind4<F, S, R, readonly [A, C], readonly [B, D]>
-export function split<F extends URIS3>(
+export function split<F extends HKT3>(
   S: Strong3<F>,
   C: Category3<F>
 ): <R, A, B, C, D>(pab: Kind3<F, R, A, B>, pcd: Kind3<F, R, C, D>) => Kind3<F, R, readonly [A, C], readonly [B, D]>
-export function split<F extends URIS2>(
+export function split<F extends HKT2>(
   S: Strong2<F>,
   C: Category2<F>
 ): <A, B, C, D>(pab: Kind2<F, A, B>, pcd: Kind2<F, C, D>) => Kind2<F, readonly [A, C], readonly [B, D]>
 export function split<F>(
   S: Strong<F>,
   C: Category<F>
-): <A, B, C, D>(pab: HKT2<F, A, B>, pcd: HKT2<F, C, D>) => HKT2<F, readonly [A, C], readonly [B, D]>
+): <A, B, C, D>(pab: Kind2<F, A, B>, pcd: Kind2<F, C, D>) => Kind2<F, readonly [A, C], readonly [B, D]>
 export function split<F>(
   S: Strong<F>,
   C: Category<F>
-): <A, B, C, D>(pab: HKT2<F, A, B>, pcd: HKT2<F, C, D>) => HKT2<F, readonly [A, C], readonly [B, D]> {
-  return <A, B, C, D>(pab: HKT2<F, A, B>, pcd: HKT2<F, C, D>) =>
+): <A, B, C, D>(pab: Kind2<F, A, B>, pcd: Kind2<F, C, D>) => Kind2<F, readonly [A, C], readonly [B, D]> {
+  return <A, B, C, D>(pab: Kind2<F, A, B>, pcd: Kind2<F, C, D>) =>
     pipe(S.first<A, B, C>(pab), C.compose(S.second<B, C, D>(pcd)))
 }
 
@@ -127,28 +127,28 @@ export function split<F>(
  *
  * @since 3.0.0
  */
-export function fanOut<F extends URIS4>(
+export function fanOut<F extends HKT4>(
   S: Strong4<F>,
   C: Category4<F>
 ): <S, R, A, B, C>(pab: Kind4<F, S, R, A, B>, pac: Kind4<F, S, R, A, C>) => Kind4<F, S, R, A, readonly [B, C]>
-export function fanOut<F extends URIS3>(
+export function fanOut<F extends HKT3>(
   S: Strong3<F>,
   C: Category3<F>
 ): <R, A, B, C>(pab: Kind3<F, R, A, B>, pac: Kind3<F, R, A, C>) => Kind3<F, R, A, readonly [B, C]>
-export function fanOut<F extends URIS2>(
+export function fanOut<F extends HKT2>(
   S: Strong2<F>,
   C: Category2<F>
 ): <A, B, C>(pab: Kind2<F, A, B>, pac: Kind2<F, A, C>) => Kind2<F, A, readonly [B, C]>
 export function fanOut<F>(
   S: Strong<F>,
   C: Category<F>
-): <A, B, C>(pab: HKT2<F, A, B>, pac: HKT2<F, A, C>) => HKT2<F, A, readonly [B, C]>
+): <A, B, C>(pab: Kind2<F, A, B>, pac: Kind2<F, A, C>) => Kind2<F, A, readonly [B, C]>
 export function fanOut<F>(
   S: Strong<F>,
   C: Category<F>
-): <A, B, C>(pab: HKT2<F, A, B>, pac: HKT2<F, A, C>) => HKT2<F, A, readonly [B, C]> {
+): <A, B, C>(pab: Kind2<F, A, B>, pac: Kind2<F, A, C>) => Kind2<F, A, readonly [B, C]> {
   const splitSC = split(S, C)
-  return <A, B, C>(pab: HKT2<F, A, B>, pac: HKT2<F, A, C>): HKT2<F, A, readonly [B, C]> =>
+  return <A, B, C>(pab: Kind2<F, A, B>, pac: Kind2<F, A, C>): Kind2<F, A, readonly [B, C]> =>
     pipe(
       C.id<A>(),
       S.promap<A, A, A, readonly [A, A]>(identity, (a) => [a, a]),

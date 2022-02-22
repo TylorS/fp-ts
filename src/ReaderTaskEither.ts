@@ -45,6 +45,7 @@ import {
 } from './FromTask'
 import { flow, identity, SK } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor3, tupled as tupled_ } from './Functor'
+import { HKT3 } from './HKT'
 import * as _ from './internal'
 import type { IO } from './IO'
 import type { IOEither, URI as IEURI } from './IOEither'
@@ -641,12 +642,8 @@ export const altW: <R2, E2, B>(
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReaderTaskEither'
-
-declare module './HKT' {
-  interface URItoKind3<R, E, A> {
-    readonly ReaderTaskEither: ReaderTaskEither<R, E, A>
-  }
+export interface URI extends HKT3 {
+  readonly _type: ReaderTaskEither<this['_R'], this['_E'], this['_A']>
 }
 
 /**

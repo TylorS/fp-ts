@@ -3,6 +3,7 @@
  */
 import type { Comonad2C } from './Comonad'
 import { flap as flap_, Functor2 } from './Functor'
+import { HKT2 } from './HKT'
 import type { Monoid } from './Monoid'
 
 // -------------------------------------------------------------------------------------
@@ -38,12 +39,8 @@ export const map: Functor2<URI>['map'] = (f) => (fa) => (p) => f(fa(p))
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Traced'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Traced: Traced<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: Traced<this['_E'], this['_A']>
 }
 
 /**

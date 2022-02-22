@@ -18,6 +18,7 @@ import { chainFirstIOK as chainFirstIOK_, chainIOK as chainIOK_, FromIO1, fromIO
 import type { FromTask1 } from './FromTask'
 import { identity } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor1, tupled as tupled_ } from './Functor'
+import { HKT } from './HKT'
 import * as _ from './internal'
 import type { Monad1 } from './Monad'
 import type { Monoid } from './Monoid'
@@ -142,12 +143,8 @@ export const flatten: <A>(mma: Task<Task<A>>) => Task<A> =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Task'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Task: Task<A>
-  }
+export interface URI extends HKT { 
+  readonly _type: Task<this['_A']>
 }
 
 /**

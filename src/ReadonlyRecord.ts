@@ -13,7 +13,7 @@ import type { FoldableWithIndex1 } from './FoldableWithIndex'
 import { pipe } from './function'
 import { flap as flap_, Functor1 } from './Functor'
 import type { FunctorWithIndex1 } from './FunctorWithIndex'
-import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import type { HKT, Kind, Kind2, Kind3, Kind4, HKT2, HKT3, HKT4 } from './HKT'
 import * as _ from './internal'
 import type { Magma } from './Magma'
 import type { Monoid } from './Monoid'
@@ -59,28 +59,28 @@ export const singleton = <A>(k: string, a: A): ReadonlyRecord<string, A> => ({ [
  * @category constructors
  * @since 3.0.0
  */
-export function fromFoldable<F extends URIS4>(
+export function fromFoldable<F extends HKT4>(
   F: Foldable4<F>
 ): <B>(
   M: Magma<B>
 ) => <A>(f: (a: A) => readonly [string, B]) => <S, R, E>(r: Kind4<F, S, R, E, A>) => ReadonlyRecord<string, B>
-export function fromFoldable<F extends URIS3>(
+export function fromFoldable<F extends HKT3>(
   F: Foldable3<F>
 ): <B>(
   M: Magma<B>
 ) => <A>(f: (a: A) => readonly [string, B]) => <R, E>(r: Kind3<F, R, E, A>) => ReadonlyRecord<string, B>
-export function fromFoldable<F extends URIS2>(
+export function fromFoldable<F extends HKT2>(
   F: Foldable2<F>
 ): <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) => <E>(r: Kind2<F, E, A>) => ReadonlyRecord<string, B>
-export function fromFoldable<F extends URIS>(
+export function fromFoldable<F extends HKT>(
   F: Foldable1<F>
 ): <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) => (r: Kind<F, A>) => ReadonlyRecord<string, B>
 export function fromFoldable<F>(
   F: Foldable_<F>
-): <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) => (r: HKT<F, A>) => ReadonlyRecord<string, B>
+): <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) => (r: Kind<F, A>) => ReadonlyRecord<string, B>
 export function fromFoldable<F>(
   F: Foldable_<F>
-): <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) => (r: HKT<F, A>) => ReadonlyRecord<string, B> {
+): <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) => (r: Kind<F, A>) => ReadonlyRecord<string, B> {
   return <B>(M: Magma<B>) => <A>(f: (a: A) => readonly [string, B]) =>
     F.reduce<Record<string, B>, A>({}, (r, a) => {
       const [k, b] = f(a)
@@ -281,36 +281,36 @@ export const reduceRightWithIndex = (
 export function traverseWithIndex(
   O: Ord<string>
 ): {
-  <F extends URIS3>(F: Applicative3<F>): <K extends string, A, R, E, B>(
+  <F extends HKT3>(F: Applicative3<F>): <K extends string, A, R, E, B>(
     f: (k: K, a: A) => Kind3<F, R, E, B>
   ) => (ta: ReadonlyRecord<K, A>) => Kind3<F, R, E, ReadonlyRecord<K, B>>
-  <F extends URIS3, E>(F: Applicative3C<F, E>): <K extends string, A, R, B>(
+  <F extends HKT3, E>(F: Applicative3C<F, E>): <K extends string, A, R, B>(
     f: (k: K, a: A) => Kind3<F, R, E, B>
   ) => (ta: ReadonlyRecord<K, A>) => Kind3<F, R, E, ReadonlyRecord<K, B>>
-  <F extends URIS2>(F: Applicative2<F>): <K extends string, A, E, B>(
+  <F extends HKT2>(F: Applicative2<F>): <K extends string, A, E, B>(
     f: (k: K, a: A) => Kind2<F, E, B>
   ) => (ta: ReadonlyRecord<K, A>) => Kind2<F, E, ReadonlyRecord<K, B>>
-  <F extends URIS2, E>(F: Applicative2C<F, E>): <K extends string, A, B>(
+  <F extends HKT2, E>(F: Applicative2C<F, E>): <K extends string, A, B>(
     f: (k: K, a: A) => Kind2<F, E, B>
   ) => (ta: ReadonlyRecord<K, A>) => Kind2<F, E, ReadonlyRecord<K, B>>
-  <F extends URIS>(F: Applicative1<F>): <K extends string, A, B>(
+  <F extends HKT>(F: Applicative1<F>): <K extends string, A, B>(
     f: (k: K, a: A) => Kind<F, B>
   ) => (ta: ReadonlyRecord<K, A>) => Kind<F, ReadonlyRecord<K, B>>
   <F>(F: Applicative<F>): <K extends string, A, B>(
-    f: (k: K, a: A) => HKT<F, B>
-  ) => (ta: ReadonlyRecord<K, A>) => HKT<F, ReadonlyRecord<K, B>>
+    f: (k: K, a: A) => Kind<F, B>
+  ) => (ta: ReadonlyRecord<K, A>) => Kind<F, ReadonlyRecord<K, B>>
 }
 export function traverseWithIndex(
   O: Ord<string>
 ): <F>(
   F: Applicative<F>
-) => <A, B>(f: (k: string, a: A) => HKT<F, B>) => (ta: ReadonlyRecord<string, A>) => HKT<F, ReadonlyRecord<string, B>> {
+) => <A, B>(f: (k: string, a: A) => Kind<F, B>) => (ta: ReadonlyRecord<string, A>) => Kind<F, ReadonlyRecord<string, B>> {
   const keysO = keys(O)
-  return <F>(F: Applicative<F>) => <A, B>(f: (k: string, a: A) => HKT<F, B>) => (ta: ReadonlyRecord<string, A>) => {
+  return <F>(F: Applicative<F>) => <A, B>(f: (k: string, a: A) => Kind<F, B>) => (ta: ReadonlyRecord<string, A>) => {
     if (isEmpty(ta)) {
       return F.of(empty)
     }
-    let out: HKT<F, Record<string, B>> = F.of({})
+    let out: Kind<F, Record<string, B>> = F.of({})
     for (const key of keysO(ta)) {
       out = pipe(
         out,
@@ -331,30 +331,30 @@ export function traverseWithIndex(
 export function traverse(
   O: Ord<string>
 ): {
-  <F extends URIS3>(F: Applicative3<F>): <A, R, E, B>(
+  <F extends HKT3>(F: Applicative3<F>): <A, R, E, B>(
     f: (a: A) => Kind3<F, R, E, B>
   ) => <K extends string>(ta: ReadonlyRecord<K, A>) => Kind3<F, R, E, ReadonlyRecord<K, B>>
-  <F extends URIS3, E>(F: Applicative3C<F, E>): <A, R, B>(
+  <F extends HKT3, E>(F: Applicative3C<F, E>): <A, R, B>(
     f: (a: A) => Kind3<F, R, E, B>
   ) => <K extends string>(ta: ReadonlyRecord<K, A>) => Kind3<F, R, E, ReadonlyRecord<K, B>>
-  <F extends URIS2>(F: Applicative2<F>): <A, E, B>(
+  <F extends HKT2>(F: Applicative2<F>): <A, E, B>(
     f: (a: A) => Kind2<F, E, B>
   ) => <K extends string>(ta: ReadonlyRecord<K, A>) => Kind2<F, E, ReadonlyRecord<K, B>>
-  <F extends URIS2, E>(F: Applicative2C<F, E>): <A, B>(
+  <F extends HKT2, E>(F: Applicative2C<F, E>): <A, B>(
     f: (a: A) => Kind2<F, E, B>
   ) => <K extends string>(ta: ReadonlyRecord<K, A>) => Kind2<F, E, ReadonlyRecord<K, B>>
-  <F extends URIS>(F: Applicative1<F>): <A, B>(
+  <F extends HKT>(F: Applicative1<F>): <A, B>(
     f: (a: A) => Kind<F, B>
   ) => <K extends string>(ta: ReadonlyRecord<K, A>) => Kind<F, ReadonlyRecord<K, B>>
   <F>(F: Applicative<F>): <A, B>(
-    f: (a: A) => HKT<F, B>
-  ) => <K extends string>(ta: ReadonlyRecord<K, A>) => HKT<F, ReadonlyRecord<K, B>>
+    f: (a: A) => Kind<F, B>
+  ) => <K extends string>(ta: ReadonlyRecord<K, A>) => Kind<F, ReadonlyRecord<K, B>>
 }
 export function traverse(
   O: Ord<string>
 ): <F>(
   F: Applicative<F>
-) => <A, B>(f: (a: A) => HKT<F, B>) => (ta: ReadonlyRecord<string, A>) => HKT<F, ReadonlyRecord<string, B>> {
+) => <A, B>(f: (a: A) => Kind<F, B>) => (ta: ReadonlyRecord<string, A>) => Kind<F, ReadonlyRecord<string, B>> {
   const traverseWithIndexO = traverseWithIndex(O)
   return (F) => {
     const traverseWithIndexOF = traverseWithIndexO(F)
@@ -586,12 +586,8 @@ export const separate: Compactable1<URI>['separate'] = <A, B>(
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReadonlyRecord'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly ReadonlyRecord: ReadonlyRecord<string, A>
-  }
+export interface URI extends HKT {
+  readonly _type: ReadonlyRecord<string, this['_A']>
 }
 
 /**
@@ -874,12 +870,12 @@ export const toReadonlyArray = (
 export function toUnfoldable(
   O: Ord<string>
 ): {
-  <F extends URIS>(U: Unfoldable1<F>): <K extends string, A>(r: ReadonlyRecord<K, A>) => Kind<F, readonly [K, A]>
-  <F>(U: Unfoldable<F>): <K extends string, A>(r: ReadonlyRecord<K, A>) => HKT<F, readonly [K, A]>
+  <F extends HKT>(U: Unfoldable1<F>): <K extends string, A>(r: ReadonlyRecord<K, A>) => Kind<F, readonly [K, A]>
+  <F>(U: Unfoldable<F>): <K extends string, A>(r: ReadonlyRecord<K, A>) => Kind<F, readonly [K, A]>
 }
 export function toUnfoldable(
   O: Ord<string>
-): <F>(U: Unfoldable<F>) => <A>(r: ReadonlyRecord<string, A>) => HKT<F, readonly [string, A]> {
+): <F>(U: Unfoldable<F>) => <A>(r: ReadonlyRecord<string, A>) => Kind<F, readonly [string, A]> {
   const toReadonlyArrayO = toReadonlyArray(O)
   return (U) => (r) => {
     const as = toReadonlyArrayO(r)

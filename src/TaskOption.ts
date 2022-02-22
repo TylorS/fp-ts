@@ -24,6 +24,7 @@ import {
 } from './FromTask'
 import { flow, identity, Lazy, SK } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor1, tupled as tupled_ } from './Functor'
+import { HKT } from './HKT'
 import * as _ from './internal'
 import type { Monad1 } from './Monad'
 import { NaturalTransformation11, NaturalTransformation21 } from './NaturalTransformation'
@@ -406,18 +407,8 @@ export const partitionMap: Filterable1<URI>['partitionMap'] =
  * @category instances
  * @since 3.0.0
  */
-const URI = 'TaskOption'
-
-/**
- * @category instances
- * @since 3.0.0
- */
-export type URI = typeof URI
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly [URI]: TaskOption<A>
-  }
+export interface URI extends HKT {
+  readonly _type: TaskOption<this['_A']>
 }
 
 /**

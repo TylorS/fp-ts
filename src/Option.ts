@@ -31,7 +31,7 @@ import {
 } from './FromEither'
 import { constNull, constUndefined, flow, identity, Lazy, pipe } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor1, tupled as tupled_ } from './Functor'
-import type { HKT } from './HKT'
+import type { HKT, Kind } from './HKT'
 import * as _ from './internal'
 import type { Monad1 } from './Monad'
 import type { Monoid } from './Monoid'
@@ -610,9 +610,9 @@ export const partitionMap: Filterable1<URI>['partitionMap'] = (f) => flow(map(f)
  * @category Traversable
  * @since 3.0.0
  */
-export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative_<F>) => <A, B>(f: (a: A) => HKT<F, B>) => (
+export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative_<F>) => <A, B>(f: (a: A) => Kind<F, B>) => (
   ta: Option<A>
-): HKT<F, Option<B>> => (isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some)))
+): Kind<F, Option<B>> => (isNone(ta) ? F.of(none) : pipe(f(ta.value), F.map(some)))
 
 // -------------------------------------------------------------------------------------
 // instances
@@ -622,12 +622,8 @@ export const traverse: Traversable1<URI>['traverse'] = <F>(F: Applicative_<F>) =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Option'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Option: Option<A>
-  }
+export interface URI extends HKT {
+  readonly _type: Option<this['_A']>
 }
 
 /**

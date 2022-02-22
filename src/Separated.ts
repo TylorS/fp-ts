@@ -3,6 +3,7 @@
  */
 import { Bifunctor2, map as map_, mapLeftDefault } from './Bifunctor'
 import { flap as flap_, Functor2 } from './Functor'
+import { HKT2 } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -56,12 +57,8 @@ export const mapLeft: Bifunctor2<URI>['mapLeft'] =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Separated'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Separated: Separated<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: Separated<this['_E'], this['_A']>
 }
 
 /**

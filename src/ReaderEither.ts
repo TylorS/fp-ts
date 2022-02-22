@@ -30,6 +30,7 @@ import {
 } from './FromReader'
 import { flow, identity, SK } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor3, tupled as tupled_ } from './Functor'
+import { HKT3 } from './HKT'
 import * as _ from './internal'
 import type { Monad3 } from './Monad'
 import type { Monoid } from './Monoid'
@@ -414,12 +415,8 @@ export const altW: <R2, E2, B>(
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'ReaderEither'
-
-declare module './HKT' {
-  interface URItoKind3<R, E, A> {
-    readonly ReaderEither: ReaderEither<R, E, A>
-  }
+export interface URI extends HKT3 {
+  readonly _type: ReaderEither<this['_R'], this['_E'], this['_A']>
 }
 
 /**

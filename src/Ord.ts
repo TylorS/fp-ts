@@ -13,6 +13,7 @@ import type { Contravariant1 } from './Contravariant'
 import type { Endomorphism } from './Endomorphism'
 import type { Eq } from './Eq'
 import { flow } from './function'
+import { HKT } from './HKT'
 import type { Monoid } from './Monoid'
 import type { Ordering } from './Ordering'
 import type { Predicate } from './Predicate'
@@ -132,12 +133,8 @@ export const contramap: Contravariant1<URI>['contramap'] = (f) => (fa) =>
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Ord'
-
-declare module './HKT' {
-  interface URItoKind<A> {
-    readonly Ord: Ord<A>
-  }
+export interface URI extends HKT {
+  readonly _type: Ord<this['_A']>
 }
 
 /**

@@ -44,6 +44,7 @@ import {
 } from './FromTask'
 import { flow, identity, Lazy, pipe, SK } from './function'
 import { bindTo as bindTo_, flap as flap_, Functor2, tupled as tupled_ } from './Functor'
+import { HKT2 } from './HKT'
 import * as _ from './internal'
 import type { IO } from './IO'
 import type { IOEither, URI as IEURI } from './IOEither'
@@ -568,12 +569,8 @@ export const of: <A, E = never>(a: A) => TaskEither<E, A> = right
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'TaskEither'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly TaskEither: TaskEither<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: TaskEither<this['_E'], this['_A']>
 }
 
 /**

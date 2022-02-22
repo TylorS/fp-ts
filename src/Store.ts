@@ -15,7 +15,7 @@ import {
   Functor3C,
   Functor4
 } from './Functor'
-import type { HKT, Kind, Kind2, Kind3, Kind4, URIS, URIS2, URIS3, URIS4 } from './HKT'
+import type { HKT, Kind, Kind2, Kind3, Kind4, HKT2, HKT3, HKT4 } from './HKT'
 
 // -------------------------------------------------------------------------------------
 // model
@@ -79,12 +79,8 @@ export const duplicate: <E, A>(wa: Store<E, A>) => Store<E, Store<E, A>> =
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Store'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Store: Store<E, A>
-  }
+export interface URI extends HKT2 {
+  readonly _type: Store<this['_E'], this['_A']>
 }
 
 /**
@@ -145,26 +141,26 @@ export const peeks = <S>(f: Endomorphism<S>) => <A>(wa: Store<S, A>): A => wa.pe
  *
  * @since 3.0.0
  */
-export function experiment<F extends URIS4>(
+export function experiment<F extends HKT4>(
   F: Functor4<F>
 ): <S1, S2, R, E>(f: (s: S1) => Kind4<F, S2, R, E, S1>) => <A>(wa: Store<S1, A>) => Kind4<F, S2, R, E, A>
-export function experiment<F extends URIS3>(
+export function experiment<F extends HKT3>(
   F: Functor3<F>
 ): <S, R, E>(f: (s: S) => Kind3<F, R, E, S>) => <A>(wa: Store<S, A>) => Kind3<F, R, E, A>
-export function experiment<F extends URIS3, E>(
+export function experiment<F extends HKT3, E>(
   F: Functor3C<F, E>
 ): <S, R>(f: (s: S) => Kind3<F, R, E, S>) => <A>(wa: Store<S, A>) => Kind3<F, R, E, A>
-export function experiment<F extends URIS2>(
+export function experiment<F extends HKT2>(
   F: Functor2<F>
 ): <S, E>(f: (s: S) => Kind2<F, E, S>) => <A>(wa: Store<S, A>) => Kind2<F, E, A>
-export function experiment<F extends URIS2, E>(
+export function experiment<F extends HKT2, E>(
   F: Functor2C<F, E>
 ): <S>(f: (s: S) => Kind2<F, E, S>) => <A>(wa: Store<S, A>) => Kind2<F, E, A>
-export function experiment<F extends URIS>(
+export function experiment<F extends HKT>(
   F: Functor1<F>
 ): <S>(f: (s: S) => Kind<F, S>) => <A>(wa: Store<S, A>) => Kind<F, A>
-export function experiment<F>(F: Functor_<F>): <S>(f: (s: S) => HKT<F, S>) => <A>(wa: Store<S, A>) => HKT<F, A>
-export function experiment<F>(F: Functor_<F>): <S>(f: (s: S) => HKT<F, S>) => <A>(wa: Store<S, A>) => HKT<F, A> {
+export function experiment<F>(F: Functor_<F>): <S>(f: (s: S) => Kind<F, S>) => <A>(wa: Store<S, A>) => Kind<F, A>
+export function experiment<F>(F: Functor_<F>): <S>(f: (s: S) => Kind<F, S>) => <A>(wa: Store<S, A>) => Kind<F, A> {
   return (f) => (wa) =>
     pipe(
       f(wa.pos),

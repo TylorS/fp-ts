@@ -5,6 +5,7 @@ import type { Applicative2C } from './Applicative'
 import type { Apply2C } from './Apply'
 import type { Chain2C } from './Chain'
 import { flap as flap_, Functor2 } from './Functor'
+import { HKT2 } from './HKT'
 import type { Monad2C } from './Monad'
 import type { Monoid } from './Monoid'
 import type { Pointed2C } from './Pointed'
@@ -108,12 +109,8 @@ export const map: Functor2<URI>['map'] = (f) => (fa) => () => {
  * @category instances
  * @since 3.0.0
  */
-export type URI = 'Writer'
-
-declare module './HKT' {
-  interface URItoKind2<E, A> {
-    readonly Writer: Writer<E, A>
-  }
+export interface URI extends HKT2 { 
+  readonly _type: Writer<this['_E'], this["_A"]>
 }
 
 /**
